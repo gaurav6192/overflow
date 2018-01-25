@@ -1,8 +1,8 @@
 class UserStat < ApplicationRecord
-	validates :reputation_count, presence: true
-	validates :vote_count, presence: true
-	validates :user_id, presence: true
+	validates_presence_of :reputation_count, :vote_count, :user
 
 	belongs_to :user
-	has_many :votes, as: :voteable
+	
+	ignore_deleted
+	voteable
 end

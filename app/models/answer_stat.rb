@@ -1,5 +1,8 @@
 class AnswerStat < ApplicationRecord  
+	validates_presence_of :score, :view_count, :answer
+  
   belongs_to :answer
 
-  has_many :votes, as: :voteable
+  ignore_deleted
+  voteable
 end

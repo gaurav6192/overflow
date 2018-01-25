@@ -1,8 +1,13 @@
 class Answer < ApplicationRecord
-  belongs_to :user
-  belongs_to :post
+  statusable
+  ignore_deleted
+  commentable
+	editable
+	revisionable
+  
+  validates_presence_of :body, :post, :user
 
-  has_one :answer_stat
-  has_many :answer_edits
-  has_many :statuses, as: :statusable
+  belongs_to :post
+  belongs_to :user
+  has_one :answer_stat, dependent: :destroy
 end

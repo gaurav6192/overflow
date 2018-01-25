@@ -1,5 +1,8 @@
 class PostStat < ApplicationRecord
+	validates_presence_of :score, :view_count, :post
+
   belongs_to :post
 
-  has_many :votes, as: :voteable
+  ignore_deleted
+  voteable
 end
