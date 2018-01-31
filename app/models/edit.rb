@@ -6,5 +6,5 @@ class Edit < ApplicationRecord
 	belongs_to :editable, polymorphic: true, optional: true
 	belongs_to :user
 	has_one :revision
-	has_one :answer_stat, dependent: :destroy
+	has_one :edit_stat, dependent: :destroy
 end

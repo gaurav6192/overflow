@@ -14,6 +14,7 @@ describe Edit do
   describe "ActiveRecord associations" do
     it { expect(edit).to belong_to(:editable) }
     it { expect(edit).to belong_to(:user) }
+    it { expect(answer).to have_one(:edit_stat) }
   end
 
   describe "default scope" do

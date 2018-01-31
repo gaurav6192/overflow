@@ -6,7 +6,7 @@ after "development:posts" do
 	  answer = Answer.new(
 	  	body: body,
 	  	user_id: user_id,
-	  	post_id: tag_id
+	  	post_id: post_id
 	  )
 	  answer.create_answer_stat
 		answer.save
