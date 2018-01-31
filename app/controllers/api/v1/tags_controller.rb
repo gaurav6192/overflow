@@ -1,17 +1,17 @@
 module Api::V1
 	class TagsController < ApiController
 		def create
-			render json: current_user.tags.create!(filtered_params), status: :created
+			render json: Tag.create!(filtered_params), status: :created
 		end
 
 		def update
-			render json: current_user.find_tag.update_attributes!(filtered_params), status: :ok
+			render json: Tag.find(params[:id]).update_attributes!(filtered_params), status: :ok
 		end
 
 		private
 
 		def filtered_params
-			params.require(:badge).permit(:title)
+			params.require(:tag).permit(:title)
 		end
 
 		def model
@@ -22,3 +22,4 @@ module Api::V1
 			tags.find(params[:id])
 		end
 	end
+end

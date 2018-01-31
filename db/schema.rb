@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180123203446) do
+ActiveRecord::Schema.define(version: 20180130074800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 20180123203446) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "edit_stats", force: :cascade do |t|
+    t.bigint "edit_id"
+    t.integer "score", default: 0, null: false
+    t.datetime "last_activity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_edit_stats_on_deleted_at"
+    t.index ["edit_id"], name: "index_edit_stats_on_edit_id"
+  end
+
   create_table "edits", force: :cascade do |t|
     t.jsonb "editable_content", default: "{}", null: false
     t.string "editable_type"
@@ -84,6 +95,7 @@ ActiveRecord::Schema.define(version: 20180123203446) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.datetime "deleted_at"
+    t.integer "score", default: 0, null: false
     t.index ["deleted_at"], name: "index_edits_on_deleted_at"
     t.index ["editable_type", "editable_id"], name: "index_edits_on_editable_type_and_editable_id"
     t.index ["user_id"], name: "index_edits_on_user_id"
@@ -137,7 +149,9 @@ ActiveRecord::Schema.define(version: 20180123203446) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.datetime "deleted_at"
+    t.bigint "edit_id"
     t.index ["deleted_at"], name: "index_revisions_on_deleted_at"
+    t.index ["edit_id"], name: "index_revisions_on_edit_id"
     t.index ["revisionable_type", "revisionable_id"], name: "index_revisions_on_revisionable_type_and_revisionable_id"
     t.index ["user_id"], name: "index_revisions_on_user_id"
   end
@@ -152,27 +166,12 @@ ActiveRecord::Schema.define(version: 20180123203446) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "statuses", force: :cascade do |t|
-    t.string "name"
-    t.string "statusable_type"
-    t.bigint "statusable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_statuses_on_deleted_at"
-    t.index ["statusable_type", "statusable_id"], name: "index_statuses_on_statusable_type_and_statusable_id"
-    t.index ["user_id"], name: "index_statuses_on_user_id"
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string "title"
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_tags_on_deleted_at"
-    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "tags_users", id: false, force: :cascade do |t|
@@ -185,7 +184,6 @@ ActiveRecord::Schema.define(version: 20180123203446) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.integer "reputation_count", default: 0, null: false
-    t.integer "vote_count", default: 0, null: false
     t.datetime "last_voted_at"
     t.datetime "last_reputation_changed_at"
     t.datetime "deleted_at"
@@ -234,15 +232,15 @@ ActiveRecord::Schema.define(version: 20180123203446) do
   add_foreign_key "answers", "users"
   add_foreign_key "comment_stats", "comments"
   add_foreign_key "comments", "users"
+  add_foreign_key "edit_stats", "edits"
   add_foreign_key "edits", "users"
   add_foreign_key "post_stats", "posts"
   add_foreign_key "posts", "users"
   add_foreign_key "recommendations", "posts"
   add_foreign_key "recommendations", "posts", column: "recommendation_id"
+  add_foreign_key "revisions", "edits"
   add_foreign_key "revisions", "users"
   add_foreign_key "sessions", "users"
-  add_foreign_key "statuses", "users"
-  add_foreign_key "tags", "users"
   add_foreign_key "user_stats", "users"
   add_foreign_key "votes", "user_stats"
   add_foreign_key "votes", "vote_types"

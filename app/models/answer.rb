@@ -1,5 +1,4 @@
 class Answer < ApplicationRecord
-  statusable
   ignore_deleted
   commentable
 	editable

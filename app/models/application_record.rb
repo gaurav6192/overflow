@@ -5,6 +5,5 @@ class ApplicationRecord < ActiveRecord::Base
   include Editable
   include Revisionable
   include SoftDelete
-  include Statusable
   include Voteable
 end

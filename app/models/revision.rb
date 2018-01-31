@@ -1,8 +1,9 @@
 class Revision < ApplicationRecord
-	validates_presence_of :user
+	ignore_deleted
+	
+	validates_presence_of :user, :revisionable_content
 	
 	belongs_to :revisionable, polymorphic: true, optional: true
+	belongs_to :edit, optional: true
 	belongs_to :user
-
-	ignore_deleted
 end

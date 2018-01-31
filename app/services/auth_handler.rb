@@ -4,16 +4,16 @@ class AuthHandler
 	end
 
 	def authenticate(password, cookies)
-		raise ActiveRecord::RecordNotFound if user.authenticate(password)
+		raise ActiveRecord::RecordNotFound unless user.authenticate(password)
 		cookies.signed[:user_id] = user.id
 		cookies.signed[:auth_token] = session_token
 		return user
 	end
 
-	def self.logout(session, cookies)
+	def logout(session, cookies)
 		session.destroy!
 		cookies.delete('user_id')
-		cookies.delete(:auth_token)
+		cookies.delete('auth_token')
 	end
 
 	private
@@ -23,7 +23,7 @@ class AuthHandler
 	def session_token
 		loop do
 			token = SecureRandom.urlsafe_base64
-			return token unless Session.unscope.find_by(auth_token: token).present?
+			return token unless Session.find_by(auth_token: token).present?
 		end
 	end
 end

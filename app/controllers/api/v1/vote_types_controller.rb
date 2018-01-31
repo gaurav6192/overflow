@@ -1,16 +1,13 @@
-class VoteTypesController < ApplicationController
-  def index
-  end
+module Api::V1
+  class VoteTypesController < ApiController
 
-  def show
-  end
+    private
+      def filtered_params
+        params.require(:vote_type).permit(:name, :score_change)
+      end
 
-  def create
-  end
-
-  def update
-  end
-
-  def destroy
+      def model
+        VoteType
+      end
   end
 end

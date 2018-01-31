@@ -1,25 +1,24 @@
-require 'rails_helper'
+describe VoteType do
+  it "has a valid factory" do
+    expect(build(:vote_type)).to be_valid
+  end
 
-RSpec.describe VoteType, type: :model do
-  subject { described_class.new(name: "foo", score_change: 1) }
+  let(:vote_type) { build(:vote_type) }
+  
+  describe "ActiveModel validations" do
+    it { expect(vote_type).to validate_presence_of(:name) }
+    it { expect(vote_type).to validate_presence_of(:score_change) }
+    it { expect(vote_type).to validate_uniqueness_of(:name).case_insensitive }
+  end
 
-  describe "Validations" do
-    it "is valid with valid attributes" do
-      expect(subject).to be_valid
+  describe "ActiveRecord associations" do
+    it { expect(vote_type).to have_many(:votes) }
+  end
+
+  describe "default scope" do
+    it "returns all vote_types with deleted_at nil" do
+      vote_type = create(:vote_type)
+      expect(vote_type.deleted_at).to eq(nil)
     end
-
-    it "is not valid without a name" do
-      subject.name = nil
-      expect(subject).to_not be_valid
-    end
-
-    it "is not valid without a score change" do
-      subject.score_change = nil
-      expect(subject).to_not be_valid
-    end
-
-    it "is not valid with existing name" do
-	  	should validate_uniqueness_of(:name).case_insensitive
-	  end
   end
 end
