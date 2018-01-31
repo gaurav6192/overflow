@@ -7,7 +7,6 @@ Rails.application.routes.draw do
 			resources :edits, only: :index do
 				resources :votes, only: [:index, :create, :destroy]
 			end
-			resources :stats, only: :show
 			resources :revisions, only: :index
 			resources :votes, only: [:index, :create, :destroy]
 		end
@@ -24,7 +23,6 @@ Rails.application.routes.draw do
 			resources :edits, only: :index do
 				resources :votes, only: [:index, :create, :destroy]
 			end
-			resources :stats, only: :show
 			resources :recommendations, only: :index
 			resources :revisions, only: :index
 			resources :votes, only: [:index, :create, :destroy]
